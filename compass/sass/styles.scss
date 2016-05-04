@@ -2,8 +2,8 @@
 
 @media (min-width: 500px) {
 	nav {
-		height: 80px;
-		img { height: 60px; }
+		height: 55px;
+		img { height: 30px; }
 		input { margin-top: 5px; }
 		li { margin-right: 5px; }
 	}
@@ -71,7 +71,7 @@ footer {
 
 /* registration page */
 
-.failure-msg { color: red; }
+.error-message { color: red; }
 
 .button-holder { margin-bottom: 10px; }
 
@@ -95,25 +95,13 @@ footer {
 
 /* second header */
 .grey-header {
+	background-color: $header-grey;
+	.row { padding: 5px; }
+	.active { color: white; }
+	
+	// get rid of any excess margins
 	.col-sm-2 > * {
 		margin: 0;
 		padding: 0;
 	}
-	background-color: $header-grey;
-	.menu-text {
-		text-transform: uppercase;
-		color: $header-inactive;
-		height: 25px;
-	}
-	.active { color: white; }
-	.menu-img {
-		height: 35px;
-		background-repeat: no-repeat;
-		background-position: 25% 0%;
-		transform: scale(0.5, 0.5);
-	}
-	.step-one {	background-image: url("../images/menu.png"); }
-	.step-two { }
-	.step-three { }
-	.step-four { }
 }

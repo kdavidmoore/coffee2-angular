@@ -1,11 +1,11 @@
 @media (min-width: 500px) {
   /* line 4, ../compass/sass/styles.scss */
   nav {
-    height: 80px;
+    height: 55px;
   }
   /* line 6, ../compass/sass/styles.scss */
   nav img {
-    height: 60px;
+    height: 30px;
   }
   /* line 7, ../compass/sass/styles.scss */
   nav input {
@@ -84,13 +84,13 @@
 
 /* line 66, ../compass/sass/styles.scss */
 footer {
-  background-color: #bfbfbf;
+  background-color: #afafaf;
   padding: 5px 0;
 }
 
 /* registration page */
 /* line 74, ../compass/sass/styles.scss */
-.failure-msg {
+.error-message {
   color: red;
 }
 
@@ -134,31 +134,18 @@ footer {
 /* second header */
 /* line 97, ../compass/sass/styles.scss */
 .grey-header {
-  background-color: #7e7e7e;
+  background-color: #afafaf;
 }
-/* line 98, ../compass/sass/styles.scss */
-.grey-header .col-sm-2 > * {
-  margin: 0;
-  padding: 0;
+/* line 99, ../compass/sass/styles.scss */
+.grey-header .row {
+  padding: 5px;
 }
-/* line 103, ../compass/sass/styles.scss */
-.grey-header .menu-text {
-  text-transform: uppercase;
-  color: #a6a6a6;
-  height: 25px;
-}
-/* line 108, ../compass/sass/styles.scss */
+/* line 100, ../compass/sass/styles.scss */
 .grey-header .active {
   color: white;
 }
-/* line 109, ../compass/sass/styles.scss */
-.grey-header .menu-img {
-  height: 35px;
-  background-repeat: no-repeat;
-  background-position: 25% 0%;
-  transform: scale(0.5, 0.5);
-}
-/* line 115, ../compass/sass/styles.scss */
-.grey-header .step-one {
-  background-image: url("../images/menu.png");
+/* line 103, ../compass/sass/styles.scss */
+.grey-header .col-sm-2 > * {
+  margin: 0;
+  padding: 0;
 }
