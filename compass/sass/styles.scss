@@ -1,0 +1,119 @@
+@import "vars";
+
+@media (min-width: 500px) {
+	nav {
+		height: 80px;
+		img { height: 60px; }
+		input { margin-top: 5px; }
+		li { margin-right: 5px; }
+	}
+}
+
+@media (max-width: 499px) {
+	nav {
+		img { height: 20px; }
+		li { margin-left: 10px; }
+	}
+}
+
+/* main content */
+
+.section { height: 350px; }
+
+#one {
+	background-image: url("../images/coffee.jpg");
+	background-position: 75% 75%;
+	background-repeat: no-repeat;
+}
+
+.section-small {
+	height: 45px;
+	background-color: $background-green;
+	h3 {
+		color: $coffee-green;
+		position: relative;
+		top: -10px;
+	}
+}
+
+#two {
+	color: #fff;
+	background-image: url("../images/bags.jpg");
+	background-position: 25% 25%;
+	background-repeat: no-repeat;
+}
+
+#three {
+	background-color: $background-green;
+	background-image: url("../images/grower.jpg");
+	background-position: 0% 0%;
+	background-repeat: no-repeat;
+}
+
+#four {
+	color: #fff;
+	background-color: #000;
+	background-image: url("../images/steaming.jpg");
+	background-position: 75% 0%;
+	background-repeat: no-repeat;
+}
+
+.section-med {
+	height: 200px;
+	background-color: $background-green;
+}
+
+footer {
+	background-color: $footer-grey;
+	padding: 5px 0;
+}
+
+
+/* registration page */
+
+.failure-msg { color: red; }
+
+.button-holder { margin-bottom: 10px; }
+
+/* options page */
+.add-margin { margin-top: 10px; }
+
+
+.btn.btn-success {
+	background-color: $coffee-green;
+	border: none;
+}
+.btn.btn-success:hover {
+	background-color: $coffee-green-light;
+}
+.btn.btn-success:active {
+	background-color: $coffee-green;
+}
+
+.content { background-color: $background-green; }
+.white-panel { background-color: #fff; }
+
+/* second header */
+.grey-header {
+	.col-sm-2 > * {
+		margin: 0;
+		padding: 0;
+	}
+	background-color: $header-grey;
+	.menu-text {
+		text-transform: uppercase;
+		color: $header-inactive;
+		height: 25px;
+	}
+	.active { color: white; }
+	.menu-img {
+		height: 35px;
+		background-repeat: no-repeat;
+		background-position: 25% 0%;
+		transform: scale(0.5, 0.5);
+	}
+	.step-one {	background-image: url("../images/menu.png"); }
+	.step-two { }
+	.step-three { }
+	.step-four { }
+}

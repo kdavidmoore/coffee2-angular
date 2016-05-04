@@ -1,0 +1,68 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <h1>Tell us what you want</h1>
+        <h5>Shipping is free, and you can skip any week</h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 text-center white-panel">
+        <h1>Individual Plan</h1>
+        <p>For those who drink alone</p><img src="images/drinker.jpg" class="img-responsive">
+        <div class="col-sm-6 text-right">
+          <h4>Cups per week:  </h4>
+          <h4>Price per cup:  </h4>
+          <h4>Weekly total:  </h4>
+          <h4>Grind type:  </h4>
+        </div>
+        <div class="col-sm-6 text-left">
+          <h4>  14</h4>
+          <h4>  $0.50</h4>
+          <h4>  $7.00</h4>
+          <select name="grind-type" class="btn btn-default">
+            <option value="espresso">Espresso</option>
+            <option value="aero">Aeropress</option>
+            <option value="drip">Drip</option>
+            <option value="fpress">French press</option>
+          </select>
+        </div>
+        <div class="col-sm-12 text-center">
+          <form id="options-form" action="/options" method="post">
+            <button type="submit" class="btn btn-success btn-lg">Submit</button>
+          </form>
+          <p class="add-margin">Shipping is always free.</p>
+          <p>Skip any week. Cancel any time.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 text-center white-panel">
+        <h1>Family Plan</h1>
+        <p>For those who drink together</p><img src="images/drinkers.jpg" class="img-responsive">
+        <div class="col-sm-6 text-right">
+          <h4>Cups per week:  </h4>
+          <h4>Price per cup:  </h4>
+          <h4>Weekly total:  </h4>
+          <h4>Grind type:  </h4>
+        </div>
+        <div class="col-sm-6 text-left">
+          <h4>  40</h4>
+          <h4>  $0.45</h4>
+          <h4>  $18.00</h4>
+          <select name="grind-type" class="btn btn-default">
+            <option value="espresso">Espresso</option>
+            <option value="aero">Aeropress</option>
+            <option value="drip">Drip</option>
+            <option value="fpress">French press</option>
+          </select>
+        </div>
+        <div class="col-sm-12 text-center">
+          <form id="options-form" action="/options" method="post">
+            <button type="submit" class="btn btn-success btn-lg">Submit</button>
+          </form>
+          <p class="add-margin">Shipping is always free.</p>
+          <p>Skip any week. Cancel any time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
