@@ -77,6 +77,34 @@ coffeeApp.controller('loginController', function($scope, $http, $location){
 
 
 coffeeApp.controller('optionsCtrl', function($scope, $http, $location){
-	
+	$scope.frequencies = [
+		{ 
+			option: "Weekly"
+		},
+		{
+			option: "Every other week"
+		},
+		{
+			option: "Monthly"
+		}
+	];
+
+	$scope.grinds = [
+		{ 
+			option: "Espresso"
+		},
+		{
+			option: "Aeropress"
+		},
+		{
+			option: "Drip"
+		},
+		{
+			option: "Chemex/Clever"
+		},
+		{
+			option: "French Press"
+		}
+	];
 	//post the options to the server
 });

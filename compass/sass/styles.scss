@@ -93,6 +93,15 @@ footer {
 .content { background-color: $background-green; }
 .white-panel { background-color: #fff; }
 
+.add-border {
+	border: 1px solid $border-color;
+	border-radius: 3px;
+	margin-bottom: 20px;
+}
+
+.img-wrapper { padding: 10%; }
+
+
 /* second header */
 .grey-header {
 	background-color: $header-grey;

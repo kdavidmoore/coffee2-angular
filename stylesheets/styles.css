@@ -131,20 +131,32 @@ footer {
   background-color: #fff;
 }
 
+/* line 96, ../compass/sass/styles.scss */
+.add-border {
+  border: 1px solid #e3e0d9;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+/* line 102, ../compass/sass/styles.scss */
+.img-wrapper {
+  padding: 10%;
+}
+
 /* second header */
-/* line 97, ../compass/sass/styles.scss */
+/* line 106, ../compass/sass/styles.scss */
 .grey-header {
   background-color: #afafaf;
 }
-/* line 99, ../compass/sass/styles.scss */
+/* line 108, ../compass/sass/styles.scss */
 .grey-header .row {
   padding: 5px;
 }
-/* line 100, ../compass/sass/styles.scss */
+/* line 109, ../compass/sass/styles.scss */
 .grey-header .active {
   color: white;
 }
-/* line 103, ../compass/sass/styles.scss */
+/* line 112, ../compass/sass/styles.scss */
 .grey-header .col-sm-2 > * {
   margin: 0;
   padding: 0;
