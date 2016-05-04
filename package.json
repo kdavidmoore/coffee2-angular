@@ -1,0 +1,20 @@
+{
+  "name": "coffee2-angular",
+  "version": "1.0.0",
+  "description": "The front-end of the new coffee app is built using AngularJS. It connects to the back-end app.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kdavidmoore/coffee2-angular.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kdavidmoore/coffee2-angular/issues"
+  },
+  "homepage": "https://github.com/kdavidmoore/coffee2-angular#readme"
+}
