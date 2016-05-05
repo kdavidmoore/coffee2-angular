@@ -35,6 +35,30 @@ coffeeApp.controller('mainController', function($scope){
 });
 
 
+coffeeApp.controller('navController', function($scope, $http, $cookies){
+	// check to see if the user is logged in
+	$http({
+		method: 'GET',
+		url: apiUrl + '/getUserData?token=' + $cookies.get('token')
+	}).then(function successCallback(response){
+		if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
+			$scope.loggedIn = false;
+		} else {
+			// set logged in to True so the navbar links update appropriately
+			$scope.loggedIn = true;
+		}
+	}, function errorCallback(response){
+		console.log(response.status);
+	});
+
+	$scope.logout = function(){
+		// clear cookies
+		
+	};
+
+});
+
+
 coffeeApp.controller('regController', function($scope, $http, $location, $cookies){
 
 	$scope.registerForm = function(){
@@ -58,8 +82,8 @@ coffeeApp.controller('regController', function($scope, $http, $location, $cookie
 				//redirect to options page
 				$location.path('/options');
 			}
-		}, function errorCallback(status){
-			console.log(status);
+		}, function errorCallback(response){
+			console.log(response.status);
 		});
 	};
 });
@@ -86,19 +110,30 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 				$cookies.put('token', response.data.token);
 				$cookies.put('username', $scope.username);
 
-				$scope.loggedIn = true;
-				
 				//redirect to options page
 				$location.path('/options');
 			}
-		}, function errorCallback(status){
-			console.log(status);
+		}, function errorCallback(response){
+			console.log(response.status);
 		});
 	};
 });
 
 
 coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies){
+
+	// make sure the user is logged in, i.e., that someone has not just pasted /options in the URL
+	$http({
+		method: 'GET',
+		url: apiUrl + '/getUserData?token=' + $cookies.get('token')
+	}).then(function successCallback(response){
+		if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
+			//redirect to login page
+			$location.path('/login');
+		}
+	}, function errorCallback(response){
+		console.log(response.status);
+	});
 
 	$scope.frequencies = [
 		{ 
@@ -130,7 +165,7 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 		}
 	];
 
-	$scope.optionsForm = function(){
+	$scope.optionsForm = function(orderType){
 		$http({
 			method: 'POST',
 			url: apiUrl + '/options',
@@ -138,7 +173,7 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 				token: $cookies.get('token')
 			}
 		}).then(function successCallback(response){
-			if (response.data.failure == 'noToken'){
+			if (response.data.failure == 'badToken'){
 				// invalid token, so redirect to login page
 				$location.path('/login');
 			} else if (success = 'tokenMatch') {
@@ -150,8 +185,8 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 				//redirect to delivery page
 				$location.path('/delivery');
 			}
-		}, function errorCallback(status){
-			console.log(status);
+		}, function errorCallback(response){
+			console.log(response.status);
 		});
 	};
 });
@@ -161,6 +196,19 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 
 	$scope.states = usStates;
 
+	// make sure the user is logged in, i.e., that someone has not just pasted /options in the URL
+	$http({
+		method: 'GET',
+		url: apiUrl + '/getUserData?token=' + $cookies.get('token')
+	}).then(function successCallback(response){
+		if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
+			//redirect to login page
+			$location.path('/login');
+		}
+	}, function errorCallback(response){
+		console.log(response.status);
+	});
+
 	$scope.deliveryForm = function(){
 			$http({
 			method: 'POST',
@@ -169,7 +217,7 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 				token: $cookies.get('token')
 			}
 		}).then(function successCallback(response){
-			if (response.data.failure == 'noToken'){
+			if (response.data.failure == 'badToken'){
 					// invalid token, so redirect to login page
 					$location.path('/login');
 				} else if (success = 'tokenMatch') {
@@ -185,8 +233,8 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 					//redirect to checkout page
 					$location.path('/checkout');
 				}
-		}, function errorCallback(status){
-			console.log(status);
+		}, function errorCallback(response){
+			console.log(response.status);
 		});
 	};
 });
@@ -194,9 +242,23 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 
 coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies){
 
+	// make sure the user is logged in, i.e., that someone has not just pasted /options in the URL
+	$http({
+		method: 'GET',
+		url: apiUrl + '/getUserData?token=' + $cookies.get('token')
+	}).then(function successCallback(response){
+		if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
+			//redirect to login page
+			$location.path('/login');
+		}
+	}, function errorCallback(response){
+		console.log(response.status);
+	});
+
 	$scope.frequency = $cookies.get('frequency');
 	$scope.quantity = $cookies.get('quantity');
 	$scope.grindType = $cookies.get('grindType');
+	console.log($scope.grindType);
 	$scope.fullname = $cookies.get('fullname');
 	$scope.addressOne = $cookies.get('addressOne');
 	$scope.addressTwo = $cookies.get('addressTwo');
@@ -225,15 +287,15 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 				deliveryDate: $cookies.get('deliveryDate')
 			}
 		}).then(function successCallback(response){
-			if (response.data.failure == 'noToken'){
+			if (response.data.failure == 'badToken'){
 					// invalid token, so redirect to login page
 					$location.path('/login');
-				} else if (success = 'tokenMatch') {
+				} else if (success = 'updated') {
 					//redirect to receipt page
 					$location.path('/receipt');
 				}
-		}, function errorCallback(status){
-			console.log(status);
+		}, function errorCallback(response){
+			console.log(response.status);
 		});
 	};
 });
