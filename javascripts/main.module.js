@@ -85,6 +85,9 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 				// potential security issue here
 				$cookies.put('token', response.data.token);
 				$cookies.put('username', $scope.username);
+
+				$scope.loggedIn = true;
+				
 				//redirect to options page
 				$location.path('/options');
 			}
@@ -140,9 +143,9 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 				$location.path('/login');
 			} else if (success = 'tokenMatch') {
 				// put the options info into cookies for temporary storage
+				$cookies.put('frequency', $scope.frequency);
+				$cookies.put('quantity', $scope.quantity);
 				$cookies.put('grindType', $scope.grindType);
-				
-				// etc.
 
 				//redirect to delivery page
 				$location.path('/delivery');
@@ -170,6 +173,15 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 					// invalid token, so redirect to login page
 					$location.path('/login');
 				} else if (success = 'tokenMatch') {
+					// put the delivery info into cookies for temporary storage
+					$cookies.put('fullname', $scope.usrFullname);
+					$cookies.put('addressOne', $scope.addressOne);
+					$cookies.put('addressTwo', $scope.addressTwo);
+					$cookies.put('city', $scope.usrCity);
+					$cookies.put('state', $scope.usrState);
+					$cookies.put('zip', $scope.usrZip);
+					$cookies.put('deliveryDate', $scope.deliveryDate);
+
 					//redirect to checkout page
 					$location.path('/checkout');
 				}
@@ -182,14 +194,35 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 
 coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies){
 
-	$scope.states = usStates;
+	$scope.frequency = $cookies.get('frequency');
+	$scope.quantity = $cookies.get('quantity');
+	$scope.grindType = $cookies.get('grindType');
+	$scope.fullname = $cookies.get('fullname');
+	$scope.addressOne = $cookies.get('addressOne');
+	$scope.addressTwo = $cookies.get('addressTwo');
+	$scope.city = $cookies.get('city');
+	$scope.state = $cookies.get('state');
+	$scope.zip = $cookies.get('zip');
+	$scope.deliveryDate = $cookies.get('deliveryDate');
+	$scope.total = Number($scope.quantity) * 20.00;
+
 
 	$scope.checkoutForm = function(){
 			$http({
 			method: 'POST',
 			url: apiUrl + '/checkout',
 			data: {
-				token: $cookies.get('token')
+				token: $cookies.get('token'),
+				frequency: $cookies.get('frequency'),
+				quantity: $cookies.get('quantity'),
+				grindType: $cookies.get('grindType'),
+				fullname: $cookies.get('fullname'),
+				addressOne: $cookies.get('addressOne'),
+				addressTwo: $cookies.get('addressTwo'),
+				city: $cookies.get('city'),
+				state: $cookies.get('state'),
+				zip: $cookies.get('zip'),
+				deliveryDate: $cookies.get('deliveryDate')
 			}
 		}).then(function successCallback(response){
 			if (response.data.failure == 'noToken'){

@@ -42,7 +42,7 @@
 /* line 42, ../compass/sass/styles.scss */
 .section-small {
   height: 45px;
-  background-color: #efede9;
+  background-color: #edebe6;
 }
 /* line 46, ../compass/sass/styles.scss */
 .section-small h3 {
@@ -61,7 +61,7 @@
 
 /* line 60, ../compass/sass/styles.scss */
 #three {
-  background-color: #efede9;
+  background-color: #edebe6;
   background-image: url("../images/grower.jpg");
   background-position: 0% 0%;
   background-repeat: no-repeat;
@@ -79,7 +79,7 @@
 /* line 75, ../compass/sass/styles.scss */
 .section-med {
   height: 200px;
-  background-color: #efede9;
+  background-color: #edebe6;
 }
 
 /* line 80, ../compass/sass/styles.scss */
@@ -96,7 +96,7 @@ footer {
 
 /* line 92, ../compass/sass/styles.scss */
 .button-holder {
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 /* options page */
@@ -123,40 +123,42 @@ footer {
 
 /* line 115, ../compass/sass/styles.scss */
 .content {
-  background-color: #efede9;
+  background-color: #edebe6;
 }
 
 /* line 119, ../compass/sass/styles.scss */
-.white-panel {
-  background-color: #fff;
+.light-panel {
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 5px;
 }
 
-/* line 123, ../compass/sass/styles.scss */
+/* line 125, ../compass/sass/styles.scss */
 .add-border {
   border: 1px solid #e3e0d9;
   border-radius: 3px;
   margin-bottom: 20px;
 }
 
-/* line 129, ../compass/sass/styles.scss */
+/* line 131, ../compass/sass/styles.scss */
 .img-wrapper {
   padding: 10%;
 }
 
 /* second header */
-/* line 134, ../compass/sass/styles.scss */
+/* line 136, ../compass/sass/styles.scss */
 .grey-header {
   background-color: #afafaf;
 }
-/* line 137, ../compass/sass/styles.scss */
+/* line 139, ../compass/sass/styles.scss */
 .grey-header .row {
   padding: 5px;
 }
-/* line 141, ../compass/sass/styles.scss */
+/* line 143, ../compass/sass/styles.scss */
 .grey-header .active {
   color: white;
 }
-/* line 146, ../compass/sass/styles.scss */
+/* line 148, ../compass/sass/styles.scss */
 .grey-header .col-sm-2 > * {
   margin: 0;
   padding: 0;

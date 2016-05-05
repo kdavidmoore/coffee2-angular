@@ -90,7 +90,7 @@ footer {
 }
 
 .button-holder {
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 /* options page */
@@ -116,8 +116,10 @@ footer {
   background-color: $background-green;
 }
 
-.white-panel {
-  background-color: #fff;
+.light-panel {
+  background-color: $background-green-light;
+  border: 1px solid $background-green-light;
+  border-radius: 5px;
 }
 
 .add-border {

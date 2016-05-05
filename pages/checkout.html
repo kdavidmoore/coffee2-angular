@@ -22,8 +22,86 @@
 
 			<div class="row">
 				<div class="col-sm-12">
-					<h1>Show us the money</h1>
-					<h5>We won't sell your credit card info. We promise.</h5>
+					<h1>Payment</h1>
+					<h5>Order summary below</h5>
+				</div>
+			</div>
+
+			<div class="container light-panel">
+			
+				<div class="row">
+					<div class="col-sm-12">
+						<h1>Choices</h1>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<p>Grind</p>
+						<p>Frequency of Delivery</p>
+						<p>Coffee (lbs)</p>
+					</div>
+					<div class="col-sm-6">
+						<p>{{grindType}}</p>
+						<p>{{frequency}}</p>
+						<p>{{quantity}}</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-12">
+						<h1>Delivery Information</h1>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<p>Full Name</p>
+						<p>Address</p>
+						<p>Address (line 2)</p>
+						<p>City</p>
+						<p>State</p>
+						<p>Zip</p>
+						<p>Delivery Date</p>
+					</div>
+					<div class="col-sm-6">
+						<p>{{grindType}}</p>
+						<p>{{frequency}}</p>
+						<p>{{quantity}}</p>
+						<p>{{city}}</p>
+						<p>{{state}}</p>
+						<p>{{zip}}</p>
+						<p>{{deliveryDate}}</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-12">
+						<h1>Current Charge</h1>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<p>Quantity</p>
+						<p>Shipping</p>
+						<h2>Total</h2>
+					</div>
+					<div class="col-sm-6">
+						<p>{{quantity}}lbs x $20.00/lb = {{total}}</p>
+						<p>FREE!</p>
+						<h2>{{total}}</h2>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<div class="button-holder">
+						<button type="submit" name="submit" class="btn btn-success btn-lg">Pay With Card</button>
+						<button type="submit" name="cancel" class="btn btn-danger btn-lg">Cancel Order</button>
+					</div>
 				</div>
 			</div>
 
