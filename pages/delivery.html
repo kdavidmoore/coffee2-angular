@@ -17,4 +17,60 @@
 		</div>
 	</div>
 
+	<div class="container">
+		<form ng-submit="deliveryForm()">
+			<div class="row">
+				<div class="col-sm-12">
+					<h1>Please enter your shipping info</h1>
+					<h5>We treat your coffee like gold. Like black gold (not Texas tea). It will be shipped safely, guaranteed.</h5>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-12 col-md-6 add-border">
+					<h2>Address</h2>
+					<div class="form-group">
+						<label for="name-field">Full Name</label>
+						<input type="text" id="name-field" ng-model="usrFullname" placeholder="John Doe" minlength="4" maxlength="30" class="form-control">
+					</div>
+					<div class="form-group">
+						<label for="addr-field-one">Address Line 1</label>
+						<input type="text" id="addr-field-one" ng-model="usrAddrOne" placeholder="100 Main Street" minlength="4" maxlength="30" class="form-control">
+					</div>
+					<div class="form-group">
+						<label for="addr-field-two">Address Line 2</label>
+						<input type="text" id="addr-field-two" ng-model="usrAddrTwo" placeholder="Apt. 100" minlength="4" maxlength="30" class="form-control">
+					</div>
+					<div class="form-group">
+						<label for="city-field">City</label>
+						<input type="text" id="city-field" ng-model="usrCity" placeholder="Your City" minlength="2" maxlength="30" class="form-control">
+					</div>
+					<div class="form-group">
+						<label for="state-dropdown">State</label> <br/>
+						<select id="state-dropdown" ng-model="usrState" ng-options="key as value for (key, value) in states">
+					    	<option value=""></option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="zip-field">Zip Code</label>
+						<input type="number" id="zip-field" ng-model="usrZip" placeholder="Your City" minlength="5" maxlength="5" class="form-control">
+					</div>
+					<div class="form-group">
+						<label for="date-field">Delivery Date</label>
+						<input type="date" id="date-field" ng-model="usrDeliveryDate" class="form-control">
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="button-holder">
+						<button type="submit" class="btn btn-success btn-lg">Submit</button>
+					</div>
+				</div>
+			</div>
+
+		</form>
+
+	</div>
 </div>

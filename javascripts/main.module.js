@@ -1,6 +1,7 @@
 var coffeeApp = angular.module('coffeeApp', ['ngRoute', 'ngCookies']);
 var apiUrl = 'http://localhost:3000';
 
+
 coffeeApp.config(function($routeProvider){
 	$routeProvider.when('/', {
 		templateUrl: 'pages/main.html',
@@ -17,6 +18,12 @@ coffeeApp.config(function($routeProvider){
 	}).when('/delivery', {
 		templateUrl: 'pages/delivery.html',
 		controller: 'deliveryCtrl'
+	}).when('/checkout', {
+		templateUrl: 'pages/checkout.html',
+		controller: 'checkoutCtrl'
+	}).when('/receipt', {
+		templateUrl: 'pages/receipt.html',
+		controller: 'receiptCtrl'
 	}).otherwise({
 		redirectTo: '/'
 	});
@@ -24,8 +31,9 @@ coffeeApp.config(function($routeProvider){
 
 
 coffeeApp.controller('mainController', function($scope){	
-
+	console.log('this is the main controller.');
 });
+
 
 coffeeApp.controller('regController', function($scope, $http, $location, $cookies){
 
@@ -127,22 +135,77 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 				token: $cookies.get('token')
 			}
 		}).then(function successCallback(response){
-			if (response.data.failure == 'userInputError'){
-				$scope.errorMessage = "Invalid user input.";
-			} else if (response.data.failure == 'noToken'){
+			if (response.data.failure == 'noToken'){
 				// invalid token, so redirect to login page
 				$location.path('/login');
 			} else if (success = 'tokenMatch') {
+				// put the options info into cookies for temporary storage
+				$cookies.put('grindType', $scope.grindType);
+				
+				// etc.
+
 				//redirect to delivery page
 				$location.path('/delivery');
 			}
 		}, function errorCallback(status){
 			console.log(status);
-		})
-	}
+		});
+	};
 });
 
+
 coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies){
-	console.log('This is the delivery page.');
-	
+
+	$scope.states = usStates;
+
+	$scope.deliveryForm = function(){
+			$http({
+			method: 'POST',
+			url: apiUrl + '/delivery',
+			data: {
+				token: $cookies.get('token')
+			}
+		}).then(function successCallback(response){
+			if (response.data.failure == 'noToken'){
+					// invalid token, so redirect to login page
+					$location.path('/login');
+				} else if (success = 'tokenMatch') {
+					//redirect to checkout page
+					$location.path('/checkout');
+				}
+		}, function errorCallback(status){
+			console.log(status);
+		});
+	};
+});
+
+
+coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies){
+
+	$scope.states = usStates;
+
+	$scope.checkoutForm = function(){
+			$http({
+			method: 'POST',
+			url: apiUrl + '/checkout',
+			data: {
+				token: $cookies.get('token')
+			}
+		}).then(function successCallback(response){
+			if (response.data.failure == 'noToken'){
+					// invalid token, so redirect to login page
+					$location.path('/login');
+				} else if (success = 'tokenMatch') {
+					//redirect to receipt page
+					$location.path('/receipt');
+				}
+		}, function errorCallback(status){
+			console.log(status);
+		});
+	};
+});
+
+
+coffeeApp.controller('receiptCtrl', function($scope){
+	console.log('this is the receipt controller.');
 });
