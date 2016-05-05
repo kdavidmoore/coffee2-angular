@@ -1,116 +1,150 @@
 @import "vars";
 
 @media (min-width: 500px) {
-	nav {
-		height: 55px;
-		img { height: 30px; }
-		input { margin-top: 5px; }
-		li { margin-right: 5px; }
-	}
+  nav {
+    height: 55px;
+
+    img {
+      height: 30px;
+    }
+    input {
+      margin-top: 5px;
+    }
+    li {
+      margin-right: 5px;
+    }
+  }
 }
 
 @media (max-width: 499px) {
-	nav {
-		img { height: 20px; }
-		li { margin-left: 10px; }
-	}
+  nav {
+    img {
+      height: 20px;
+    }
+    li {
+      margin-left: 10px;
+    }
+  }
 }
 
 /* main content */
 
-.section { height: 350px; }
+.section {
+  height: 350px;
+}
 
 #one {
-	background-image: url("../images/coffee.jpg");
-	background-position: 75% 75%;
-	background-repeat: no-repeat;
+  background-image: url("../images/coffee.jpg");
+  background-position: 75% 75%;
+  background-repeat: no-repeat;
 }
 
 .section-small {
-	height: 45px;
-	background-color: $background-green;
-	h3 {
-		color: $coffee-green;
-		position: relative;
-		top: -10px;
-	}
+  height: 45px;
+  background-color: $background-green;
+
+  h3 {
+    color: $coffee-green;
+    position: relative;
+    top: -10px;
+  }
 }
 
 #two {
-	color: #fff;
-	background-image: url("../images/bags.jpg");
-	background-position: 25% 25%;
-	background-repeat: no-repeat;
+  color: #fff;
+  background-image: url("../images/bags.jpg");
+  background-position: 25% 25%;
+  background-repeat: no-repeat;
 }
 
 #three {
-	background-color: $background-green;
-	background-image: url("../images/grower.jpg");
-	background-position: 0% 0%;
-	background-repeat: no-repeat;
+  background-color: $background-green;
+  background-image: url("../images/grower.jpg");
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
 }
 
 #four {
-	color: #fff;
-	background-color: #000;
-	background-image: url("../images/steaming.jpg");
-	background-position: 75% 0%;
-	background-repeat: no-repeat;
+  color: #fff;
+  background-color: #000;
+  background-image: url("../images/steaming.jpg");
+  background-position: 75% 0%;
+  background-repeat: no-repeat;
 }
 
 .section-med {
-	height: 200px;
-	background-color: $background-green;
+  height: 200px;
+  background-color: $background-green;
 }
 
 footer {
-	background-color: $footer-grey;
-	padding: 5px 0;
+  background-color: $footer-grey;
+  padding: 5px 0;
 }
 
 
 /* registration page */
 
-.error-message { color: red; }
+.error-message {
+  color: red;
+}
 
-.button-holder { margin-bottom: 10px; }
+.button-holder {
+  margin-bottom: 10px;
+}
 
 /* options page */
-.add-margin { margin-top: 10px; }
+.add-margin {
+  margin-top: 10px;
+}
 
 
 .btn.btn-success {
-	background-color: $coffee-green;
-	border: none;
-}
-.btn.btn-success:hover {
-	background-color: $coffee-green-light;
-}
-.btn.btn-success:active {
-	background-color: $coffee-green;
+  background-color: $coffee-green;
+  border: none;
 }
 
-.content { background-color: $background-green; }
-.white-panel { background-color: #fff; }
+.btn.btn-success:hover {
+  background-color: $coffee-green-light;
+}
+
+.btn.btn-success:active {
+  background-color: $coffee-green;
+}
+
+.content {
+  background-color: $background-green;
+}
+
+.white-panel {
+  background-color: #fff;
+}
 
 .add-border {
-	border: 1px solid $border-color;
-	border-radius: 3px;
-	margin-bottom: 20px;
+  border: 1px solid $border-color;
+  border-radius: 3px;
+  margin-bottom: 20px;
 }
 
-.img-wrapper { padding: 10%; }
-
+.img-wrapper {
+  padding: 10%;
+}
 
 /* second header */
 .grey-header {
-	background-color: $header-grey;
-	.row { padding: 5px; }
-	.active { color: white; }
-	
-	// get rid of any excess margins
-	.col-sm-2 > * {
-		margin: 0;
-		padding: 0;
-	}
+  background-color: $header-grey;
+  
+  .row {
+    padding: 5px;
+  }
+
+  .active {
+    color: white;
+  }
+  
+  // get rid of any unwanted whitespace
+  .col-sm-2 > * {
+    margin: 0;
+    padding: 0;
+  }
 }

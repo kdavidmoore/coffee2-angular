@@ -1,4 +1,4 @@
-var coffeeApp = angular.module('coffeeApp', ['ngRoute']);
+var coffeeApp = angular.module('coffeeApp', ['ngRoute', 'ngCookies']);
 var apiUrl = 'http://localhost:3000';
 
 coffeeApp.config(function($routeProvider){
@@ -14,6 +14,9 @@ coffeeApp.config(function($routeProvider){
 	}).when('/options', {
 		templateUrl: 'pages/options.html',
 		controller: 'optionsCtrl'
+	}).when('/delivery', {
+		templateUrl: 'pages/delivery.html',
+		controller: 'deliveryCtrl'
 	}).otherwise({
 		redirectTo: '/'
 	});
@@ -24,7 +27,7 @@ coffeeApp.controller('mainController', function($scope){
 
 });
 
-coffeeApp.controller('regController', function($scope, $http, $location){
+coffeeApp.controller('regController', function($scope, $http, $location, $cookies){
 
 	$scope.registerForm = function(){
 		$http({
@@ -40,8 +43,12 @@ coffeeApp.controller('regController', function($scope, $http, $location){
 			if(response.data.failure == 'passwordMatch'){
 				$scope.errorMessage = 'The passwords do not match.';
 			} else if (response.data.success == 'added'){
-				//redirect to login page
-				$location.path('/login');
+				// store the token and username inside cookies
+				// potential security issue here
+				$cookies.put('token', response.data.token);
+				$cookies.put('username', $scope.username);
+				//redirect to options page
+				$location.path('/options');
 			}
 		}, function errorCallback(status){
 			console.log(status);
@@ -50,7 +57,7 @@ coffeeApp.controller('regController', function($scope, $http, $location){
 });
 
 
-coffeeApp.controller('loginController', function($scope, $http, $location){
+coffeeApp.controller('loginController', function($scope, $http, $location, $cookies){
 	
 	$scope.loginForm = function(){
 		$http({
@@ -66,6 +73,10 @@ coffeeApp.controller('loginController', function($scope, $http, $location){
 			} else if (response.data.failure == 'noUser'){
 				$scope.errorMessage = 'The username entered was not found.';
 			} else if (response.data.success == 'match'){
+				// store the token and username inside cookies
+				// potential security issue here
+				$cookies.put('token', response.data.token);
+				$cookies.put('username', $scope.username);
 				//redirect to options page
 				$location.path('/options');
 			}
@@ -76,7 +87,8 @@ coffeeApp.controller('loginController', function($scope, $http, $location){
 });
 
 
-coffeeApp.controller('optionsCtrl', function($scope, $http, $location){
+coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies){
+
 	$scope.frequencies = [
 		{ 
 			option: "Weekly"
@@ -106,5 +118,31 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location){
 			option: "French Press"
 		}
 	];
-	//post the options to the server
+
+	$scope.optionsForm = function(){
+		$http({
+			method: 'POST',
+			url: apiUrl + '/options',
+			data: {
+				token: $cookies.get('token')
+			}
+		}).then(function successCallback(response){
+			if (response.data.failure == 'userInputError'){
+				$scope.errorMessage = "Invalid user input.";
+			} else if (response.data.failure == 'noToken'){
+				// invalid token, so redirect to login page
+				$location.path('/login');
+			} else if (success = 'tokenMatch') {
+				//redirect to delivery page
+				$location.path('/delivery');
+			}
+		}, function errorCallback(status){
+			console.log(status);
+		})
+	}
+});
+
+coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies){
+	console.log('This is the delivery page.');
+	
 });
