@@ -54,6 +54,7 @@ coffeeApp.controller('navController', function($scope, $http, $cookies){
 	$scope.logout = function(){
 		// clear cookies
 		
+
 	};
 
 });
@@ -166,6 +167,19 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 	];
 
 	$scope.optionsForm = function(orderType){
+		if (!$scope.grindType){
+			// make the user select a grind type before submitting the form
+			return 'no grind selected.';
+		}
+
+		if (orderType == 'solo'){
+			$scope.quantity = 0.50;
+			$scope.frequency = { option: "Monthly" }
+		} else if (orderType == 'family'){
+			$scope.quantity = 1.00;
+			$scope.frequency = { option: "Every other week" }
+		}
+
 		$http({
 			method: 'POST',
 			url: apiUrl + '/options',
@@ -178,9 +192,9 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 				$location.path('/login');
 			} else if (success = 'tokenMatch') {
 				// put the options info into cookies for temporary storage
-				$cookies.put('frequency', $scope.frequency);
+				$cookies.put('frequency', $scope.frequency.option);
 				$cookies.put('quantity', $scope.quantity);
-				$cookies.put('grindType', $scope.grindType);
+				$cookies.put('grindType', $scope.grindType.option);
 
 				//redirect to delivery page
 				$location.path('/delivery');
@@ -258,7 +272,6 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 	$scope.frequency = $cookies.get('frequency');
 	$scope.quantity = $cookies.get('quantity');
 	$scope.grindType = $cookies.get('grindType');
-	console.log($scope.grindType);
 	$scope.fullname = $cookies.get('fullname');
 	$scope.addressOne = $cookies.get('addressOne');
 	$scope.addressTwo = $cookies.get('addressTwo');

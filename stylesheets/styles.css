@@ -105,60 +105,60 @@ footer {
   margin-top: 10px;
 }
 
-/* line 102, ../compass/sass/styles.scss */
+/* line 101, ../compass/sass/styles.scss */
 .btn.btn-success {
   background-color: #2c514a;
   border: none;
 }
 
-/* line 107, ../compass/sass/styles.scss */
+/* line 106, ../compass/sass/styles.scss */
 .btn.btn-success:hover {
   background-color: #509386;
 }
 
-/* line 111, ../compass/sass/styles.scss */
+/* line 110, ../compass/sass/styles.scss */
 .btn.btn-success:active {
   background-color: #2c514a;
 }
 
-/* line 115, ../compass/sass/styles.scss */
+/* line 114, ../compass/sass/styles.scss */
 .content {
   background-color: #edebe6;
 }
 
-/* line 119, ../compass/sass/styles.scss */
+/* line 118, ../compass/sass/styles.scss */
 .light-panel {
   background-color: white;
   border: 1px solid white;
   border-radius: 5px;
 }
 
-/* line 125, ../compass/sass/styles.scss */
+/* line 124, ../compass/sass/styles.scss */
 .add-border {
   border: 1px solid #e3e0d9;
   border-radius: 3px;
   margin-bottom: 20px;
 }
 
-/* line 131, ../compass/sass/styles.scss */
+/* line 130, ../compass/sass/styles.scss */
 .img-wrapper {
   padding: 10%;
 }
 
 /* second header */
-/* line 136, ../compass/sass/styles.scss */
+/* line 135, ../compass/sass/styles.scss */
 .grey-header {
   background-color: #afafaf;
 }
-/* line 139, ../compass/sass/styles.scss */
+/* line 138, ../compass/sass/styles.scss */
 .grey-header .row {
   padding: 5px;
 }
-/* line 143, ../compass/sass/styles.scss */
+/* line 142, ../compass/sass/styles.scss */
 .grey-header .active {
   color: white;
 }
-/* line 148, ../compass/sass/styles.scss */
+/* line 147, ../compass/sass/styles.scss */
 .grey-header .col-sm-2 > * {
   margin: 0;
   padding: 0;
