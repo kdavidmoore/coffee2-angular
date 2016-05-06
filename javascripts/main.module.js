@@ -1,5 +1,5 @@
 var coffeeApp = angular.module('coffeeApp', ['ngRoute', 'ngCookies']);
-var apiUrl = 'http://localhost:3000';
+const apiUrl = 'http://localhost:3000';
 
 
 coffeeApp.config(function($routeProvider){
@@ -239,12 +239,12 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 					$location.path('/login');
 				} else if (success = 'tokenMatch') {
 					// put the delivery info into cookies for temporary storage
-					$cookies.put('fullname', $scope.usrFullname);
+					$cookies.put('fullname', $scope.fullname);
 					$cookies.put('addressOne', $scope.addressOne);
 					$cookies.put('addressTwo', $scope.addressTwo);
-					$cookies.put('city', $scope.usrCity);
-					$cookies.put('state', $scope.usrState);
-					$cookies.put('zip', $scope.usrZip);
+					$cookies.put('city', $scope.city);
+					$cookies.put('state', $scope.state);
+					$cookies.put('zip', $scope.zip);
 					$cookies.put('deliveryDate', $scope.deliveryDate);
 
 					//redirect to checkout page
@@ -291,16 +291,16 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 			url: apiUrl + '/checkout',
 			data: {
 				token: $cookies.get('token'),
-				frequency: $cookies.get('frequency'),
-				quantity: $cookies.get('quantity'),
-				grindType: $cookies.get('grindType'),
-				fullname: $cookies.get('fullname'),
-				addressOne: $cookies.get('addressOne'),
-				addressTwo: $cookies.get('addressTwo'),
-				city: $cookies.get('city'),
-				state: $cookies.get('state'),
-				zip: $cookies.get('zip'),
-				deliveryDate: $cookies.get('deliveryDate')
+				frequency: $scope.frequency,
+				quantity: $scope.quantity,
+				grindType: $scope.grindType,
+				fullname: $scope.fullname,
+				addressOne: $scope.addressOne,
+				addressTwo: $scope.addressTwo,
+				city: $scope.city,
+				state: $scope.state,
+				zip: $scope.zip,
+				deliveryDate: $scope.deliveryDate
 			}
 		}).then(function successCallback(response){
 			if (response.data.failure == 'badToken'){

@@ -43,17 +43,17 @@
 					</div>
 					<div class="form-group">
 						<label for="city-field">City</label>
-						<input type="text" id="city-field" ng-model="usrCity" placeholder="Your City" minlength="2" maxlength="30" class="form-control">
+						<input type="text" id="city-field" ng-model="city" placeholder="Your City" minlength="2" maxlength="30" class="form-control">
 					</div>
 					<div class="form-group">
 						<label for="state-dropdown">State</label> <br/>
-						<select id="state-dropdown" ng-model="usrState" ng-options="key as value for (key, value) in states">
+						<select id="state-dropdown" ng-model="state" ng-options="key as value for (key, value) in states">
 					    	<option value=""></option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="zip-field">Zip Code</label>
-						<input type="number" id="zip-field" ng-model="usrZip" placeholder="Your City" minlength="5" maxlength="5" class="form-control">
+						<input type="number" id="zip-field" ng-model="zip" placeholder="Your City" minlength="5" maxlength="5" class="form-control">
 					</div>
 					<div class="form-group">
 						<label for="date-field">Delivery Date</label>
