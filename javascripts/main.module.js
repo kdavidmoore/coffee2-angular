@@ -24,6 +24,9 @@ coffeeApp.config(function($routeProvider){
 	}).when('/receipt', {
 		templateUrl: 'pages/receipt.html',
 		controller: 'receiptCtrl'
+	}).when('/logout', {
+		templateUrl: 'pages/logout.html',
+		controller: 'logoutCtrl'
 	}).otherwise({
 		redirectTo: '/'
 	});
@@ -35,16 +38,17 @@ coffeeApp.controller('mainController', function($scope){
 });
 
 
-coffeeApp.controller('navController', function($scope, $http, $cookies){
+coffeeApp.controller('navController', function($scope, $http, $location, $cookies){
 	// check to see if the user is logged in
 	$http({
 		method: 'GET',
 		url: apiUrl + '/getUserData?token=' + $cookies.get('token')
 	}).then(function successCallback(response){
 		if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
+			// hide the log out link and show the other links
 			$scope.loggedIn = false;
 		} else {
-			// set logged in to True so the navbar links update appropriately
+			// hide the log in and register links and show the log out link
 			$scope.loggedIn = true;
 		}
 	}, function errorCallback(response){
@@ -52,9 +56,9 @@ coffeeApp.controller('navController', function($scope, $http, $cookies){
 	});
 
 	$scope.logout = function(){
-		// clear cookies
-		
-
+		// clear cookies and redirect to the logout page
+		$cookies.remove('token');
+		$location.path('/logout');
 	};
 
 });
@@ -76,10 +80,8 @@ coffeeApp.controller('regController', function($scope, $http, $location, $cookie
 			if(response.data.failure == 'passwordMatch'){
 				$scope.errorMessage = 'The passwords do not match.';
 			} else if (response.data.success == 'added'){
-				// store the token and username inside cookies
-				// potential security issue here
+				// store the token inside cookies
 				$cookies.put('token', response.data.token);
-				$cookies.put('username', $scope.username);
 				//redirect to options page
 				$location.path('/options');
 			}
@@ -106,10 +108,9 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 			} else if (response.data.failure == 'noUser'){
 				$scope.errorMessage = 'The username entered was not found.';
 			} else if (response.data.success == 'match'){
-				// store the token and username inside cookies
+				// store the token inside cookies
 				// potential security issue here
 				$cookies.put('token', response.data.token);
-				$cookies.put('username', $scope.username);
 
 				//redirect to options page
 				$location.path('/options');
@@ -131,6 +132,8 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 		if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
 			//redirect to login page
 			$location.path('/login');
+		} else {
+			$scope.userOptions = response.data;
 		}
 	}, function errorCallback(response){
 		console.log(response.status);
@@ -304,7 +307,8 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 					// invalid token, so redirect to login page
 					$location.path('/login');
 				} else if (success = 'updated') {
-					//redirect to receipt page
+					// clear cookies and redirect to receipt page
+					$cookies.remove('token');
 					$location.path('/receipt');
 				}
 		}, function errorCallback(response){
@@ -313,7 +317,12 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 	};
 });
 
-
 coffeeApp.controller('receiptCtrl', function($scope){
-	console.log('this is the receipt controller.');
+	$scope.logoutHeader = "Your order is on its way"
+	$scope.logoutMessage = "We appreciate your business!"
+});
+
+coffeeApp.controller('logoutCtrl', function($scope){
+	$scope.logoutHeader = "You have been logged out"
+	$scope.logoutMessage = "Come back soon!"
 });
