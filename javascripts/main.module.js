@@ -66,11 +66,15 @@ coffeeApp.controller('ourController', function($scope){
 
 
 coffeeApp.controller('navController', function($scope, $http, $location, $cookies){
+	
 	// check to see if the user is logged in
+	console.log($cookies.get('token'));
+
 	$http({
 		method: 'GET',
 		url: apiUrl + '/getUserData?token=' + $cookies.get('token')
 	}).then(function successCallback(response){
+		console.log(response.data);
 		if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
 			// hide the log out link and show the other links
 			$scope.loggedIn = false;
@@ -84,6 +88,7 @@ coffeeApp.controller('navController', function($scope, $http, $location, $cookie
 
 	$scope.logout = function(){
 		// clear cookies and redirect to the logout page
+		// for some reason, the token is not getting removed from cookies
 		$cookies.remove('token');
 		$location.path('/logout');
 	};
@@ -94,27 +99,36 @@ coffeeApp.controller('navController', function($scope, $http, $location, $cookie
 coffeeApp.controller('regController', function($scope, $http, $location, $cookies){
 
 	$scope.registerForm = function(){
-		$http({
-			method: 'POST',
-			url: apiUrl + '/register',
-			data: {
-				username: $scope.username,
-				password: $scope.password,
-				password2: $scope.password2,
-				email: $scope.email
-			}
-		}).then(function successCallback(response){
-			if(response.data.failure == 'passwordMatch'){
-				$scope.errorMessage = 'The passwords do not match.';
-			} else if (response.data.success == 'added'){
-				// store the token inside cookies
-				$cookies.put('token', response.data.token);
-				//redirect to options page
-				$location.path('/options');
-			}
-		}, function errorCallback(response){
-			console.log(response.status);
-		});
+
+		if ($scope.password !== $scope.password2){
+			$scope.errorMessage = 'The passwords do not match.';
+		} else {
+			$http({
+				method: 'POST',
+				url: apiUrl + '/register',
+				data: {
+					username: $scope.username,
+					password: $scope.password,
+					password2: $scope.password2,
+					email: $scope.email
+				}
+			}).then(function successCallback(response){
+				if(response.data.success == 'added'){
+					// get the current date and add one
+					var expDate = new Date();
+  					exp.setDate(exp.getDate() + 1);
+					// get a random token back from the API and store it inside cookies
+					// make the cookie expire tomorrow
+					$cookies.put('token', response.data.token, {'expires': expDate});
+					//redirect to options page
+					$location.path('/options');
+				} else if (response.data.failure == 'notUnique'){
+					$scope.errorMessage = 'That username is taken.';
+				}
+			}, function errorCallback(response){
+				console.log(response.status);
+			});
+		}
 	};
 });
 
@@ -135,9 +149,12 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 			} else if (response.data.failure == 'noUser'){
 				$scope.errorMessage = 'The username entered was not found.';
 			} else if (response.data.success == 'match'){
+				// get tomorrow's date
+				var expDate = new Date();
+  				exp.setDate(exp.getDate() + 1);
 				// store the token inside cookies
-				// potential security issue here
-				$cookies.put('token', response.data.token);
+				// set the expiration date
+				$cookies.put('token', response.data.token, {'expires': expDate});
 
 				//redirect to options page
 				$location.path('/options');
@@ -225,11 +242,14 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 				// invalid token, so redirect to login page
 				$location.path('/login');
 			} else if (success = 'tokenMatch') {
+				// get tomorrow's date
+				var expDate = new Date();
+  				exp.setDate(exp.getDate() + 1);
 				// put the options info into cookies for temporary storage
-				$cookies.put('frequency', $scope.frequency.option);
-				$cookies.put('quantity', $scope.quantity);
-				$cookies.put('grindType', $scope.grindType.option);
-				$cookies.put('unitCost', $scope.unitCost);
+				$cookies.put('frequency', $scope.frequency.option, {'expires': expDate});
+				$cookies.put('quantity', $scope.quantity, {'expires': expDate});
+				$cookies.put('grindType', $scope.grindType.option, {'expires': expDate});
+				$cookies.put('unitCost', $scope.unitCost, {'expires': expDate});
 
 				//redirect to delivery page
 				$location.path('/delivery');
@@ -270,21 +290,24 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 					// invalid token, so redirect to login page
 					$location.path('/login');
 				} else if (success = 'tokenMatch') {
+					// get tomorrow's date
+					var expDate = new Date();
+  					exp.setDate(exp.getDate() + 1);
+
 					// put the delivery info into cookies for temporary storage
-					
 					if ($scope.addressTwo == null){
-						$cookies.put('addressTwo', ' ');
+						$cookies.put('addressTwo', ' ', {'expires': expDate});
 					} else {
-						$cookies.put('addressTwo', $scope.addressTwo);
+						$cookies.put('addressTwo', $scope.addressTwo, {'expires': expDate});
 					}
 
-					$cookies.put('fullname', $scope.fullname);
-					$cookies.put('addressOne', $scope.addressOne);
-					//$cookies.put('addressTwo', $scope.addressTwo);
-					$cookies.put('city', $scope.city);
-					$cookies.put('state', $scope.state);
-					$cookies.put('zip', $scope.zip);
-					$cookies.put('deliveryDate', $scope.deliveryDate);
+					$cookies.put('fullname', $scope.fullname, {'expires': expDate});
+					$cookies.put('addressOne', $scope.addressOne, {'expires': expDate});
+					//$cookies.put('addressTwo', $scope.addressTwo, {'expires': expDate});
+					$cookies.put('city', $scope.city, {'expires': expDate});
+					$cookies.put('state', $scope.state, {'expires': expDate});
+					$cookies.put('zip', $scope.zip, {'expires': expDate});
+					$cookies.put('deliveryDate', $scope.deliveryDate, {'expires': expDate});
 
 					//redirect to checkout page
 					$location.path('/checkout');
