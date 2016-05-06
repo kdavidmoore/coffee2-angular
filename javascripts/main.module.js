@@ -36,22 +36,14 @@ coffeeApp.config(function($routeProvider){
 });
 
 
-coffeeApp.controller('mainController', function($scope, $http, $location, $cookies){	
+coffeeApp.controller('mainController', function($scope, $location, $cookies){	
+	
 	$scope.getStarted = function(){
-		$http({
-			method: 'GET',
-			url: apiUrl + '/getUserData?token=' + $cookies.get('token')
-		}).then(function successCallback(response){
-			if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
-				// if there is no matching token, go to the register page
-				$location.path('/register');
-			} else {
-				// if there is a matching token, go to the options page
-				$location.path('/options');
-			}
-		}, function errorCallback(response){
-			console.log(response.status);
-		});
+		if($cookies.get('token')){
+			$location.path('/options');
+		} else {
+			$location.path('/register');
+		}
 	};
 
 	$scope.ourStory = function(){
@@ -65,31 +57,18 @@ coffeeApp.controller('ourController', function($scope){
 });
 
 
-coffeeApp.controller('navController', function($scope, $http, $location, $cookies){
+coffeeApp.controller('navController', function($scope, $location, $cookies){
 	
 	// check to see if the user is logged in
-	console.log($cookies.get('token'));
-
-	$http({
-		method: 'GET',
-		url: apiUrl + '/getUserData?token=' + $cookies.get('token')
-	}).then(function successCallback(response){
-		console.log(response.data);
-		if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
-			// hide the log out link and show the other links
-			$scope.loggedIn = false;
-		} else {
-			// hide the log in and register links and show the log out link
-			$scope.loggedIn = true;
-		}
-	}, function errorCallback(response){
-		console.log(response.status);
-	});
+	if($cookies.get('token')){
+		$scope.loggedIn = true;
+	} else {
+		$scope.loggedIn = false;
+	}
 
 	$scope.logout = function(){
 		// clear cookies and redirect to the logout page
 		// for some reason, the token is not getting removed from cookies
-		$cookies.remove('token');
 		$location.path('/logout');
 	};
 
@@ -116,7 +95,7 @@ coffeeApp.controller('regController', function($scope, $http, $location, $cookie
 				if(response.data.success == 'added'){
 					// get the current date and add one
 					var expDate = new Date();
-  					exp.setDate(exp.getDate() + 1);
+  					expDate.setDate(expDate.getDate() + 1);
 					// get a random token back from the API and store it inside cookies
 					// make the cookie expire tomorrow
 					$cookies.put('token', response.data.token, {'expires': expDate});
@@ -135,6 +114,11 @@ coffeeApp.controller('regController', function($scope, $http, $location, $cookie
 
 coffeeApp.controller('loginController', function($scope, $http, $location, $cookies){
 	
+	// if the user is already logged in, send them to the options page
+	if($cookies.get('token')){
+		$location.path('/options');
+	}
+
 	$scope.loginForm = function(){
 		$http({
 			method: 'POST',
@@ -151,7 +135,7 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 			} else if (response.data.success == 'match'){
 				// get tomorrow's date
 				var expDate = new Date();
-  				exp.setDate(exp.getDate() + 1);
+  				expDate.setDate(expDate.getDate() + 1);
 				// store the token inside cookies
 				// set the expiration date
 				$cookies.put('token', response.data.token, {'expires': expDate});
@@ -167,6 +151,9 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 
 
 coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies){
+
+	// if the user came from the Get Started button, make sure the view starts at the top of the page
+	window.scrollTo(0, 0);
 
 	// make sure the user is logged in, i.e., that someone has not just pasted /options in the URL
 	$http({
@@ -244,7 +231,7 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 			} else if (success = 'tokenMatch') {
 				// get tomorrow's date
 				var expDate = new Date();
-  				exp.setDate(exp.getDate() + 1);
+  				expDate.setDate(expDate.getDate() + 1);
 				// put the options info into cookies for temporary storage
 				$cookies.put('frequency', $scope.frequency.option, {'expires': expDate});
 				$cookies.put('quantity', $scope.quantity, {'expires': expDate});
@@ -292,7 +279,7 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 				} else if (success = 'tokenMatch') {
 					// get tomorrow's date
 					var expDate = new Date();
-  					exp.setDate(exp.getDate() + 1);
+  					expDate.setDate(expDate.getDate() + 1);
 
 					// put the delivery info into cookies for temporary storage
 					if ($scope.addressTwo == null){
@@ -371,8 +358,7 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 					// invalid token, so redirect to login page
 					$location.path('/login');
 				} else if (success = 'updated') {
-					// clear cookies and redirect to receipt page
-					$cookies.remove('token');
+					// redirect to receipt page
 					$location.path('/receipt');
 				}
 		}, function errorCallback(response){
@@ -381,12 +367,14 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 	};
 });
 
-coffeeApp.controller('receiptCtrl', function($scope){
+coffeeApp.controller('receiptCtrl', function($scope, $cookies){
+	$cookies.remove('token');
 	$scope.logoutHeader = "Your order is on its way"
 	$scope.logoutMessage = "We appreciate your business!"
 });
 
-coffeeApp.controller('logoutCtrl', function($scope){
+coffeeApp.controller('logoutCtrl', function($scope, $cookies){
+	$cookies.remove('token');
 	$scope.logoutHeader = "You have been logged out"
 	$scope.logoutMessage = "Come back soon!"
 });
