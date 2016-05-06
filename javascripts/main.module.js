@@ -27,14 +27,41 @@ coffeeApp.config(function($routeProvider){
 	}).when('/logout', {
 		templateUrl: 'pages/logout.html',
 		controller: 'logoutCtrl'
+	}).when('/ourstory', {
+		templateUrl: 'pages/ourstory.html',
+		controller: 'ourController'
 	}).otherwise({
 		redirectTo: '/'
 	});
 });
 
 
-coffeeApp.controller('mainController', function($scope){	
-	console.log('this is the main controller.');
+coffeeApp.controller('mainController', function($scope, $http, $location, $cookies){	
+	$scope.getStarted = function(){
+		$http({
+			method: 'GET',
+			url: apiUrl + '/getUserData?token=' + $cookies.get('token')
+		}).then(function successCallback(response){
+			if (response.data.failure == 'noToken' || response.data.failure == 'badToken'){
+				// if there is no matching token, go to the register page
+				$location.path('/register');
+			} else {
+				// if there is a matching token, go to the options page
+				$location.path('/options');
+			}
+		}, function errorCallback(response){
+			console.log(response.status);
+		});
+	};
+
+	$scope.ourStory = function(){
+		$location.path('/ourstory');
+	};
+});
+
+
+coffeeApp.controller('ourController', function($scope){	
+	// this is the our story page
 });
 
 
@@ -178,9 +205,13 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 		if (orderType == 'solo'){
 			$scope.quantity = 0.50;
 			$scope.frequency = { option: "Monthly" }
+			$scope.unitCost = 20.00;
 		} else if (orderType == 'family'){
 			$scope.quantity = 1.00;
 			$scope.frequency = { option: "Every other week" }
+			$scope.unitCost = 17.00;
+		} else {
+			$scope.unitCost = 20.00;
 		}
 
 		$http({
@@ -198,6 +229,7 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 				$cookies.put('frequency', $scope.frequency.option);
 				$cookies.put('quantity', $scope.quantity);
 				$cookies.put('grindType', $scope.grindType.option);
+				$cookies.put('unitCost', $scope.unitCost);
 
 				//redirect to delivery page
 				$location.path('/delivery');
@@ -239,9 +271,16 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 					$location.path('/login');
 				} else if (success = 'tokenMatch') {
 					// put the delivery info into cookies for temporary storage
+					
+					if ($scope.addressTwo == null){
+						$cookies.put('addressTwo', ' ');
+					} else {
+						$cookies.put('addressTwo', $scope.addressTwo);
+					}
+
 					$cookies.put('fullname', $scope.fullname);
 					$cookies.put('addressOne', $scope.addressOne);
-					$cookies.put('addressTwo', $scope.addressTwo);
+					//$cookies.put('addressTwo', $scope.addressTwo);
 					$cookies.put('city', $scope.city);
 					$cookies.put('state', $scope.state);
 					$cookies.put('zip', $scope.zip);
@@ -272,17 +311,18 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 		console.log(response.status);
 	});
 
+	$scope.unitCost = $cookies.get('unitCost');
 	$scope.frequency = $cookies.get('frequency');
 	$scope.quantity = $cookies.get('quantity');
 	$scope.grindType = $cookies.get('grindType');
 	$scope.fullname = $cookies.get('fullname');
 	$scope.addressOne = $cookies.get('addressOne');
-	$scope.addressTwo = $cookies.get('addressTwo');
+	//$scope.addressTwo = $cookies.get('addressTwo');
 	$scope.city = $cookies.get('city');
 	$scope.state = $cookies.get('state');
 	$scope.zip = $cookies.get('zip');
 	$scope.deliveryDate = $cookies.get('deliveryDate');
-	$scope.total = Number($scope.quantity) * 20.00;
+	$scope.total = Number($scope.quantity) * $scope.unitCost;
 
 
 	$scope.checkoutForm = function(){
@@ -300,7 +340,8 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 				city: $scope.city,
 				state: $scope.state,
 				zip: $scope.zip,
-				deliveryDate: $scope.deliveryDate
+				deliveryDate: $scope.deliveryDate,
+				totalCost: $scope.total
 			}
 		}).then(function successCallback(response){
 			if (response.data.failure == 'badToken'){

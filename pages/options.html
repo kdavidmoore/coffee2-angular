@@ -50,7 +50,9 @@
 								</select>
 							</div>
 							<div class="col-sm-12 text-center">
-								<button type="submit" class="btn btn-success btn-lg">Submit</button>
+								<div class="button-holder">
+									<button type="submit" class="btn btn-success btn-lg">Submit</button>
+								</div>
 								<p class="add-margin">Shipping is always free.</p>
 								<p>Skip any week. Cancel any time.</p>
 							</div>
@@ -77,7 +79,9 @@
 								</select>
 							</div>
 							<div class="col-sm-12 text-center">
-								<button type="submit" class="btn btn-success btn-lg">Submit</button>
+								<div class="button-holder">
+									<button type="submit" class="btn btn-success btn-lg">Submit</button>
+								</div>
 								<p class="add-margin">Shipping is always free.</p>
 								<p>Skip any week. Cancel any time.</p>
 							</div>
@@ -95,7 +99,7 @@
 
 		<form ng-submit="optionsForm('custom')" method="post">
 			<div class="row add-border">
-				<div class="col-sm-6">
+				<div class="col-sm-4 col-sm-offset-2">
 					<div class="img-wrapper">
 						<img src="images/calendar.png">
 					</div>
@@ -106,12 +110,12 @@
 					<select ng-model="frequency" ng-options="freq.option for freq in frequencies">
 	    				<option value=""></option>
 					</select>
-					<p>You can cancel or skip any time.</p>
+					<p class="add-margin">You can cancel or skip any time.</p>
 				</div>
 			</div>
 
 			<div class="row add-border">
-				<div class="col-sm-6">
+				<div class="col-sm-4 col-sm-offset-2">
 					<div class="img-wrapper">
 						<img src="images/scale.png">
 					</div>
@@ -121,12 +125,12 @@
 					<p>How many pounds (in increments of .25lb) would you like each delivery?</p>
 					<p>$20.00/lb</p>
 					<input type="text" class="form-control" ng-model="quantity" maxlength="10">
-					<p>You can cancel or skip any time.</p>
+					<p class="add-margin">You can cancel or skip any time.</p>
 				</div>
 			</div>
 
 			<div class="row add-border">
-				<div class="col-sm-6">
+				<div class="col-sm-4 col-sm-offset-2">
 					<div class="img-wrapper">
 						<img src="images/beans.png">
 					</div>
@@ -137,7 +141,7 @@
 					<select ng-model="grindType" ng-options="grind.option for grind in grinds">
 	    				<option value=""></option>
 					</select>
-					<p>You can cancel or skip any time.</p>
+					<p class="add-margin">You can cancel or skip any time.</p>
 				</div>
 			</div>
 
