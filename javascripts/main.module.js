@@ -93,9 +93,9 @@ coffeeApp.controller('regController', function($scope, $http, $location, $cookie
 				}
 			}).then(function successCallback(response){
 				if(response.data.success == 'added'){
-					// get the current date and add one
+					// set date at Now + 12hrs
 					var expDate = new Date();
-  					expDate.setDate(expDate.getDate() + 1);
+  					expDate.setDate(expDate.getDate() + 0.5);
 					// get a random token back from the API and store it inside cookies
 					// make the cookie expire tomorrow
 					$cookies.put('token', response.data.token, {'expires': expDate});
@@ -133,9 +133,9 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 			} else if (response.data.failure == 'noUser'){
 				$scope.errorMessage = 'The username entered was not found.';
 			} else if (response.data.success == 'match'){
-				// get tomorrow's date
+				// set date at Now + 12hrs
 				var expDate = new Date();
-  				expDate.setDate(expDate.getDate() + 1);
+  				expDate.setDate(expDate.getDate() + 0.5);
 				// store the token inside cookies
 				// set the expiration date
 				$cookies.put('token', response.data.token, {'expires': expDate});
@@ -229,9 +229,9 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 				// invalid token, so redirect to login page
 				$location.path('/login');
 			} else if (success = 'tokenMatch') {
-				// get tomorrow's date
+				// set date at Now + 12hrs
 				var expDate = new Date();
-  				expDate.setDate(expDate.getDate() + 1);
+  				expDate.setDate(expDate.getDate() + 0.5);
 				// put the options info into cookies for temporary storage
 				$cookies.put('frequency', $scope.frequency.option, {'expires': expDate});
 				$cookies.put('quantity', $scope.quantity, {'expires': expDate});
@@ -277,9 +277,9 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 					// invalid token, so redirect to login page
 					$location.path('/login');
 				} else if (success = 'tokenMatch') {
-					// get tomorrow's date
+					// set date at Now + 12hrs
 					var expDate = new Date();
-  					expDate.setDate(expDate.getDate() + 1);
+  					expDate.setDate(expDate.getDate() + 0.5);
 
 					// put the delivery info into cookies for temporary storage
 					if ($scope.addressTwo == null){
@@ -334,9 +334,12 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 	$scope.deliveryDate = $cookies.get('deliveryDate');
 	$scope.total = Number($scope.quantity) * $scope.unitCost;
 
+	$scope.cancelOrder = function(){
+		$location.path('/logout');
+	};
 
 	$scope.checkoutForm = function(){
-			$http({
+		$http({
 			method: 'POST',
 			url: apiUrl + '/checkout',
 			data: {
