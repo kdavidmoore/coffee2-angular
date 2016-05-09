@@ -1,5 +1,5 @@
 var coffeeApp = angular.module('coffeeApp', ['ngRoute', 'ngCookies']);
-const apiUrl = 'http://localhost:3000';
+const apiUrl = 'http://kdavidmoore.com:3000';
 
 
 coffeeApp.config(function($routeProvider){
@@ -30,6 +30,15 @@ coffeeApp.config(function($routeProvider){
 	}).when('/ourstory', {
 		templateUrl: 'pages/ourstory.html',
 		controller: 'ourController'
+	}).when('/cancelorder', {
+		templateUrl: 'pages/cancelorder.html',
+		controller: 'cancelOrderCtrl'
+	}).when('/cancelacct', {
+		templateUrl: 'pages/cancelacct.html',
+		controller: 'cancelAcctCtrl'
+	}).when('/cancelled', {
+		templateUrl: 'pages/cancelled.html',
+		controller: 'cancelledCtrl'
 	}).otherwise({
 		redirectTo: '/'
 	});
@@ -59,13 +68,20 @@ coffeeApp.controller('ourController', function($scope){
 
 coffeeApp.controller('navController', function($scope, $location, $cookies){
 	
-	// check to see if the user is logged in
-	if($cookies.get('token')){
-		$scope.loggedIn = true;
-	} else {
-		$scope.loggedIn = false;
-	}
-
+	// watch for path changes
+	$scope.$watch(function(){
+		return $location.path();
+	},
+	function(a){
+		// when the path changes, check to see if the user is logged in
+		// show/hide navbar links appropriately
+		if($cookies.get('token')){
+			$scope.loggedIn = true;
+		} else {
+			$scope.loggedIn = false;
+		}
+	});
+	
 	$scope.logout = function(){
 		// clear cookies and redirect to the logout page
 		// for some reason, the token is not getting removed from cookies
@@ -95,7 +111,7 @@ coffeeApp.controller('regController', function($scope, $http, $location, $cookie
 				if(response.data.success == 'added'){
 					// set date at Now + 12hrs
 					var expDate = new Date();
-  					expDate.setDate(expDate.getDate() + 0.5);
+  					expDate.setDate(expDate.getDate() + (1/24) * (1/2));
 					// get a random token back from the API and store it inside cookies
 					// make the cookie expire tomorrow
 					$cookies.put('token', response.data.token, {'expires': expDate});
@@ -135,7 +151,7 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 			} else if (response.data.success == 'match'){
 				// set date at Now + 12hrs
 				var expDate = new Date();
-  				expDate.setDate(expDate.getDate() + 0.5);
+  				expDate.setDate(expDate.getDate() + (1/24) * (1/2));
 				// store the token inside cookies
 				// set the expiration date
 				$cookies.put('token', response.data.token, {'expires': expDate});
@@ -229,9 +245,9 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 				// invalid token, so redirect to login page
 				$location.path('/login');
 			} else if (success = 'tokenMatch') {
-				// set date at Now + 12hrs
+				// set date at Now + 30 mins
 				var expDate = new Date();
-  				expDate.setDate(expDate.getDate() + 0.5);
+  				expDate.setDate(expDate.getDate() + (1/24) * (1/2));
 				// put the options info into cookies for temporary storage
 				$cookies.put('frequency', $scope.frequency.option, {'expires': expDate});
 				$cookies.put('quantity', $scope.quantity, {'expires': expDate});
@@ -280,9 +296,9 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 					// invalid token, so redirect to login page
 					$location.path('/login');
 				} else if (success = 'tokenMatch') {
-					// set date at Now + 12hrs
+					// set date at Now + 30 mins
 					var expDate = new Date();
-  					expDate.setDate(expDate.getDate() + 0.5);
+  					expDate.setDate(expDate.getDate() + (1/24) * (1/2));
 
 					// put the delivery info into cookies for temporary storage
 					if ($scope.addressTwo == null){
@@ -361,20 +377,23 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 				totalCost: $scope.total
 			}
 		}).then(function successCallback(response){
-			if (response.data.failure == 'notUpdated'){
+			if (response.data.failure == 'badToken'){
 					// probably an invalid token, so redirect to login page
 					$location.path('/login');
-				} else if (success == 'updated') {
-					// redirect to logout page
-					$location.path('/logout');
-				}
+			} else if (response.data.success == 'added') {
+				// redirect to logout page
+				$location.path('/logout');
+			}
 		}, function errorCallback(response){
 			console.log(response.status);
 		});
 	};
 
 	// we're going to pretend like we're making a stripe payment
-	$scope.payWithStripe = function(){
+	$scope.payment = function(){
+
+		console.log($cookies.get('token'));
+
 		$http({
 			method: 'POST',
 			url: apiUrl + '/payment',
@@ -407,4 +426,38 @@ coffeeApp.controller('logoutCtrl', function($scope, $cookies){
 	$cookies.remove('token');
 	$scope.logoutHeader = "You have been logged out";
 	$scope.logoutMessage = "Come back soon!";
+});
+
+coffeeApp.controller('cancelOrderCtrl', function($scope, $cookies){
+	$scope.logoutHeader = "You order has been cancelled";
+});
+
+coffeeApp.controller('cancelledCtrl', function($scope, $cookies){
+	$scope.logoutHeader = "You account has been cancelled";
+	$scope.logoutMessage = "We're sorry to see you go!";
+});
+
+coffeeApp.controller('cancelAcctCtrl', function($scope, $cookies, $http, $location){
+	$scope.logoutHeader = "Do you really want to cancel your account?";
+
+	$scope.cancelAcctForm = function(){
+		// send a POST request to the API
+		// if successful, the server will delete the user's account info
+		$http({
+			method: 'POST',
+			url: 'apiUrl' + '/cancel',
+			data: {
+				token: $cookies.get('token')
+			}
+		}).then(function successCallback(response){
+			if (response.data.success == 'removed'){
+				$location.path('/cancelled');
+			} else {
+				// no token; user needs to log in
+				$location.path('/login');
+			}
+		}, function errorCallback(response){
+			console.log(response.status);
+		});
+	};
 });
