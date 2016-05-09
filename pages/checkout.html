@@ -98,19 +98,24 @@
 		<div class="row">
 			<div class="col-sm-12 text-center">
 				<div class="button-holder">
-					<form action="" method="POST">
+
+					<!-- <form ng-submit="payWithStripe()">
 					  <script
 					    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 					    data-key="pk_test_S1PLtt6vW1RchhitC9359CNc"
-					    data-amount="999"
+					    data-amount="{{paymentTotal}}"
 					    data-name="DC Roasters"
-					    data-description="Widget"
+					    data-description="your coffee"
 					    data-image="/images/brand-lg.png"
 					    data-locale="auto">
 					  </script>
+					</form> -->
+					<form ng-submit="payWithStripe()">
+						<input type="button" name="submit" class="btn btn-success" value="Complete Order">
 					</form>
+										
 					<form ng-submit="cancelOrder()">
-						<input type="button" name="cancel" class="btn btn-danger" ng-click="cancelOrder()" value="Cancel Order">
+						<input type="button" name="cancel" class="btn btn-danger" value="Cancel Order">
 					</form>
 				</div>
 			</div>

@@ -1,5 +1,5 @@
 var coffeeApp = angular.module('coffeeApp', ['ngRoute', 'ngCookies']);
-const apiUrl = 'http://ec2-54-173-79-101.compute-1.amazonaws.com:3000';
+const apiUrl = 'http://localhost:3000';
 
 
 coffeeApp.config(function($routeProvider){
@@ -250,6 +250,9 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 
 coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies){
 
+	// make sure the view starts at the top of the page
+	window.scrollTo(0, 0);
+
 	$scope.states = usStates;
 
 	// make sure the user is logged in, i.e., that someone has not just pasted /options in the URL
@@ -333,12 +336,13 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 	$scope.zip = $cookies.get('zip');
 	$scope.deliveryDate = $cookies.get('deliveryDate');
 	$scope.total = Number($scope.quantity) * $scope.unitCost;
+	$scope.paymentTotal = $scope.total * 100;
 
 	$scope.cancelOrder = function(){
 		$location.path('/logout');
 	};
 
-	$scope.checkoutForm = function(){
+	var checkout = function(){
 		$http({
 			method: 'POST',
 			url: apiUrl + '/checkout',
@@ -357,27 +361,50 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 				totalCost: $scope.total
 			}
 		}).then(function successCallback(response){
-			if (response.data.failure == 'badToken'){
-					// invalid token, so redirect to login page
+			if (response.data.failure == 'notUpdated'){
+					// probably an invalid token, so redirect to login page
 					$location.path('/login');
-				} else if (success = 'updated') {
-					// redirect to receipt page
-					$location.path('/receipt');
+				} else if (success == 'updated') {
+					// redirect to logout page
+					$location.path('/logout');
 				}
 		}, function errorCallback(response){
 			console.log(response.status);
 		});
 	};
-});
+
+	// we're going to pretend like we're making a stripe payment
+	$scope.payWithStripe = function(){
+		$http({
+			method: 'POST',
+			url: apiUrl + '/payment',
+			data: {
+				token: $cookies.get('token')
+			}
+		}).then(function successCallback(response){
+			if (response.data.failure == 'declined'){
+				$scope.errorMessage = 'The card was declined.';
+			} else if (response.data.success == 'paid'){
+				// the payment is sucessful
+				// run the checkout function, which sends the order info to the API
+				checkout();
+			}
+		}, function errorCallback(response){
+			console.log(response.status);
+		});
+	};
+
+}); // end of checkout controller
+
 
 coffeeApp.controller('receiptCtrl', function($scope, $cookies){
 	$cookies.remove('token');
-	$scope.logoutHeader = "Your order is on its way"
-	$scope.logoutMessage = "We appreciate your business!"
+	$scope.logoutHeader = "Your order is on its way";
+	$scope.logoutMessage = "We appreciate your business!";
 });
 
 coffeeApp.controller('logoutCtrl', function($scope, $cookies){
 	$cookies.remove('token');
-	$scope.logoutHeader = "You have been logged out"
-	$scope.logoutMessage = "Come back soon!"
+	$scope.logoutHeader = "You have been logged out";
+	$scope.logoutMessage = "Come back soon!";
 });
