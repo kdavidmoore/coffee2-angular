@@ -378,11 +378,13 @@ coffeeApp.controller('checkoutCtrl', function($scope, $http, $location, $cookies
 			}
 		}).then(function successCallback(response){
 			if (response.data.failure == 'badToken'){
-					// probably an invalid token, so redirect to login page
+					// the server was not able to create the order because
+					// it couldn't find an account with that token
 					$location.path('/login');
 			} else if (response.data.success == 'added') {
-				// redirect to logout page
-				$location.path('/logout');
+				// the server created the order and sent back a success message
+				// redirect to receipt page
+				$location.path('/receipt');
 			}
 		}, function errorCallback(response){
 			console.log(response.status);

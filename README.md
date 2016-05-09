@@ -2,7 +2,7 @@
 
 ## An eCommerce site built using AngularJS
 
-The front end component makes http
+This site allows the user to register, log in, and place orders. The user info is created, updated, or deleted using http requests to an API endpoint. The API is created by an [Express app](https://github.com/kdavidmoore/coffee-site) running on the same server.
 
 ## Features
 * Register as new user by making an http POST request to an API
@@ -13,7 +13,9 @@ The front end component makes http
 * User options are stored in $cookies until checkout is complete
 * After checkout, data stored in cookies are sent to an API using $http POST request
 
-## Demo here
-insert link to portfolio
+## [Demo here](http://kdavidmoore.com/coffee)
+
+## See also
+* [Coffee Site - Back End Component](https://github.com/kdavidmoore/coffee-site) 
 
 [I learned this at DigitalCrafts](https://digitalcrafts.com)
