@@ -109,9 +109,9 @@ coffeeApp.controller('regController', function($scope, $http, $location, $cookie
 				}
 			}).then(function successCallback(response){
 				if(response.data.success == 'added'){
-					// set date at Now + 12hrs
+					// set date at Now + 30mins
 					var expDate = new Date();
-  					expDate.setDate(expDate.getDate() + (1/24) * (1/2));
+  					expDate.setDate(expDate.getDate() + (30 * 60000);
 					// get a random token back from the API and store it inside cookies
 					// make the cookie expire tomorrow
 					$cookies.put('token', response.data.token, {'expires': expDate});
@@ -149,9 +149,9 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 			} else if (response.data.failure == 'noUser'){
 				$scope.errorMessage = 'The username entered was not found.';
 			} else if (response.data.success == 'match'){
-				// set date at Now + 12hrs
+				// set date at Now + 30mins
 				var expDate = new Date();
-  				expDate.setDate(expDate.getDate() + (1/24) * (1/2));
+  				expDate.setDate(expDate.getDate() + (30 * 60000);
 				// store the token inside cookies
 				// set the expiration date
 				$cookies.put('token', response.data.token, {'expires': expDate});
@@ -166,11 +166,10 @@ coffeeApp.controller('loginController', function($scope, $http, $location, $cook
 });
 
 
-coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies){
+coffeeApp.controller('optionsCtrl', function($scope, $http, $cookies, $location){
 
 	// if the user came from the Get Started button, make sure the view starts at the top of the page
 	window.scrollTo(0, 0);
-
 	// make sure the user is logged in, i.e., that someone has not just pasted /options in the URL
 	$http({
 		method: 'GET',
@@ -247,7 +246,7 @@ coffeeApp.controller('optionsCtrl', function($scope, $http, $location, $cookies)
 			} else if (success = 'tokenMatch') {
 				// set date at Now + 30 mins
 				var expDate = new Date();
-  				expDate.setDate(expDate.getDate() + (1/24) * (1/2));
+  				expDate.setDate(expDate.getDate() + (30 * 60000);
 				// put the options info into cookies for temporary storage
 				$cookies.put('frequency', $scope.frequency.option, {'expires': expDate});
 				$cookies.put('quantity', $scope.quantity, {'expires': expDate});
@@ -298,7 +297,7 @@ coffeeApp.controller('deliveryCtrl', function($scope, $http, $location, $cookies
 				} else if (success = 'tokenMatch') {
 					// set date at Now + 30 mins
 					var expDate = new Date();
-  					expDate.setDate(expDate.getDate() + (1/24) * (1/2));
+  					expDate.setDate(expDate.getDate() + (30 * 60000);
 
 					// put the delivery info into cookies for temporary storage
 					if ($scope.addressTwo == null){
